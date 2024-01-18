@@ -11,9 +11,6 @@
 [インストールガイド](https://www.uslog.tech/introduction)をチェック
 [配布場所](https://booth.pm/ja/items/5405372)
 
-また、このリポジトリにあるunitypackageをダウンロードしてインポートしてください、
-EAUploaderを使い始めることができます。
-
 
 # Download automatically
 
@@ -25,6 +22,3 @@ Currently, the following packages are automatically downloaded
 # How to use
 Check [Installation Guide](https://www.uslog.tech/introduction)
 [Distribution Locations](https://booth.pm/ja/items/5405372)
-
-Also by downloading and importing the unitypackage in this repository,
-You can start using EAUploader.
