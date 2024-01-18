@@ -8,11 +8,11 @@
 - Shader Editor for EAUploader : シェーダー設定用追加ツール
 
 # 使い方
-以下よりダウンロードしてください。
-https://booth.pm/ja/items/5405372
+インストールガイド](https://www.uslog.tech/introduction)をチェック
+[配布場所](https://booth.pm/ja/items/5405372)
 
-このリポジトリにあるunitypackageをダウンロードしてインポートすることでも、
-EAUploaderの使用を開始できます。
+また、このリポジトリにあるunitypackageをダウンロードしてインポートしてください、
+EAUploaderを使い始めることができます。
 
 
 # Download automatically
@@ -23,8 +23,8 @@ Currently, the following packages are automatically downloaded
 - Shader Editor for EAUploader : additional tool for shader settings
 
 # How to use
-Please download from the following
-https://booth.pm/ja/items/5405372
+Check [Installation Guide](https://www.uslog.tech/introduction)
+[Distribution Locations](https://booth.pm/ja/items/5405372)
 
-You can also download and import the unitypackage in this repository,
-You can also start using EAUploader by downloading and importing the unitypackage from this repository.
+Also by downloading and importing the unitypackage in this repository,
+You can start using EAUploader.
