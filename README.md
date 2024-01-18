@@ -8,7 +8,7 @@
 - Shader Editor for EAUploader : シェーダー設定用追加ツール
 
 # 使い方
-インストールガイド](https://www.uslog.tech/introduction)をチェック
+[インストールガイド](https://www.uslog.tech/introduction)をチェック
 [配布場所](https://booth.pm/ja/items/5405372)
 
 また、このリポジトリにあるunitypackageをダウンロードしてインポートしてください、
