@@ -7,6 +7,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
+using VRC.SDK3A.Editor;
 
 [InitializeOnLoad]
 public class DependencyChecker
@@ -18,21 +19,27 @@ public class DependencyChecker
 
     static DependencyChecker()
     {
-        if (!HasCheckedDependencies())
+        RegisterBuildEvents();
+    }
+
+    private static void RegisterBuildEvents()
+    {
+        if (VRCSdkControlPanel.TryGetBuilder<IVRCSdkAvatarBuilderApi>(out var builder))
         {
-            CheckDependencies();
-            SaveCheckedDependencies();
+            builder.OnSdkBuildStart += OnBuildStart;
+            builder.OnSdkBuildFinish += OnBuildFinish;
         }
-        
-        try
-        {
-            EditorApplication.ExecuteMenuItem("EAUploader/MainWindow");
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError($"An error occurred: {ex.Message}");
-        }
-        
+    }
+
+    private static void OnBuildStart(object sender, object target)
+    {
+        // ビルド開始時には依存関係チェックをスキップ
+    }
+
+    private static void OnBuildFinish(object sender, object target)
+    {
+        // ビルド終了後に依存関係チェックを実行
+        CheckDependencies();
     }
 
     private static bool HasCheckedDependencies()
