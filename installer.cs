@@ -1,3 +1,5 @@
+#if !EA_ONBUILD
+#if UNITY_EDITOR
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -7,7 +9,6 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
-using VRC.SDK3A.Editor;
 
 [InitializeOnLoad]
 public class DependencyChecker
@@ -19,27 +20,21 @@ public class DependencyChecker
 
     static DependencyChecker()
     {
-        RegisterBuildEvents();
-    }
-
-    private static void RegisterBuildEvents()
-    {
-        if (VRCSdkControlPanel.TryGetBuilder<IVRCSdkAvatarBuilderApi>(out var builder))
+        if (!HasCheckedDependencies())
         {
-            builder.OnSdkBuildStart += OnBuildStart;
-            builder.OnSdkBuildFinish += OnBuildFinish;
+            CheckDependencies();
+            SaveCheckedDependencies();
         }
-    }
-
-    private static void OnBuildStart(object sender, object target)
-    {
-        // ビルド開始時には依存関係チェックをスキップ
-    }
-
-    private static void OnBuildFinish(object sender, object target)
-    {
-        // ビルド終了後に依存関係チェックを実行
-        CheckDependencies();
+        
+        try
+        {
+            EditorApplication.ExecuteMenuItem("EAUploader/MainWindow");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"An error occurred: {ex.Message}");
+        }
+        
     }
 
     private static bool HasCheckedDependencies()
@@ -268,3 +263,5 @@ public class DependencyChecker
         OpenEAUploaderWindowOnce();
     }
 }
+#endif
+#endif
