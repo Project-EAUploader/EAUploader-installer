@@ -5,15 +5,38 @@ using System;
 using System.Linq;
 using VRC.SDK3A.Editor;
 
-[InitializeOnLoad]
+
 public class CustomBuildProcessor
 {
-    static CustomBuildProcessor()
+    private static bool initializationPerformed = false; 
+    
+    [InitializeOnLoadMethod]
+    private static void InitializeOnLoad()
+    {
+        EditorApplication.update += WaitForIdle;
+    }
+
+    private static void WaitForIdle()
+    {
+        if (!EditorApplication.isCompiling && !EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            // エディタがアイドル状態になったら、初期化処理を実行
+            if (!initializationPerformed)
+            {
+                OnCustomBuildProcessor();
+                initializationPerformed = true;
+
+                // イベントを解除
+                EditorApplication.update -= WaitForIdle;
+            }
+        }
+    }
+
+    private static void OnCustomBuildProcessor()
     {
         RegisterSDKCallback();
     }
 
-    [InitializeOnLoadMethod]
     public static void RegisterSDKCallback()
     {
         VRCSdkControlPanel.OnSdkPanelEnable += AddBuildHook;

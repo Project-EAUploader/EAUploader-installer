@@ -10,15 +10,37 @@ using Newtonsoft.Json.Linq;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
 
-[InitializeOnLoad]
 public class DependencyChecker
 {
     private static string packageCheckFilePath = "Assets/EAUploader-installer/package-check.json";
     private static int totalUpdatesNeeded = 0;
     private static int updatesCompleted = 0;
     private static bool eaUploaderWindowOpened = false;
+    private static bool initializationPerformed = false; 
 
-    static DependencyChecker()
+    [InitializeOnLoadMethod]
+    private static void InitializeOnLoad()
+    {
+        EditorApplication.update += WaitForIdle;
+    }
+
+    private static void WaitForIdle()
+    {
+        if (!EditorApplication.isCompiling && !EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            // エディタがアイドル状態になったら、初期化処理を実行
+            if (!initializationPerformed)
+            {
+                OnDependencyChecker();
+                initializationPerformed = true;
+
+                // イベントを解除
+                EditorApplication.update -= WaitForIdle;
+            }
+        }
+    }
+
+    private static void OnDependencyChecker()
     {
         if (!HasCheckedDependencies())
         {
@@ -123,6 +145,7 @@ public class DependencyChecker
         ClearConsole();
     }
 
+    /*
     private static void OpenEAUploaderWindowOnce()
     {
         if (!eaUploaderWindowOpened)
@@ -148,6 +171,7 @@ public class DependencyChecker
             eaUploaderWindowOpened = true;
         }
     }
+    */
 
     private static bool EnsurePackageInstalled(string packageName, string version, string repoUrl)
     {
@@ -255,12 +279,6 @@ public class DependencyChecker
         var type = assembly.GetType("UnityEditor.LogEntries");
         var method = type.GetMethod("Clear");
         method.Invoke(new object(), null);
-    }
-
-    [InitializeOnLoadMethod]
-    private static void Initialize()
-    {
-        OpenEAUploaderWindowOnce();
     }
 }
 #endif
