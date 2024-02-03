@@ -17,10 +17,11 @@ public class DependencyChecker
     private static int updatesCompleted = 0;
     private static bool eaUploaderWindowOpened = false;
     private static bool initializationPerformed = false; 
-
+    
     [InitializeOnLoadMethod]
     private static void InitializeOnLoad()
     {
+        Debug.Log("EAUploader-installer is starting...");
         EditorApplication.update += WaitForIdle;
     }
 
@@ -31,21 +32,26 @@ public class DependencyChecker
             // エディタがアイドル状態になったら、初期化処理を実行
             if (!initializationPerformed)
             {
-                OnDependencyChecker();
-                initializationPerformed = true;
-
                 // イベントを解除
                 EditorApplication.update -= WaitForIdle;
+                initializationPerformed = true;
+                
+                OnDependencyChecker();
             }
         }
     }
 
     private static void OnDependencyChecker()
     {
+        Debug.Log("[EaUploader-installer] Checking dependencies...");
         if (!HasCheckedDependencies())
         {
+            Debug.Log("[EaUploader-installer] Dependencies are not up to date. Updating...");
             CheckDependencies();
             SaveCheckedDependencies();
+        } else
+        {
+            Debug.Log("[EaUploader-installer] Dependencies are already up to date.");
         }
         
         try
